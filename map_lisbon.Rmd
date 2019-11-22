@@ -109,6 +109,6 @@ ggsave("lisbon_map_white.png", # name the file
        width =42.0,            # A2 size
        height = 59.4,          # A2 size
        units = c("cm"),        # dimention
-       dpi = 600)              # High resolution, 300 is also ok
+       dpi = 300)              # High resolution, 300 is also ok
 ```
 
