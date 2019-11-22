@@ -1,0 +1,114 @@
+---
+title: "Map of Lisbon"
+author: "Peralta santos"
+date: "11/21/2019"
+output: html_document
+---
+
+
+```{r}
+library(tidyverse)
+library(osmdata)
+
+available_tags("highway")
+
+available_features()
+```
+
+
+```{r}
+getbb("Lisboa Portugal") # the coordinates of the city, save them 
+
+
+streets <- getbb("Lisboa Portugal")%>%
+  opq()%>%
+  add_osm_feature(key = "highway", 
+                  value = c("motorway", "primary", 
+                            "secondary", "tertiary")) %>%
+  osmdata_sf()
+
+
+
+small_streets <- getbb("Lisboa Portugal")%>%
+  opq()%>%
+  add_osm_feature(key = "highway", 
+                  value = c("residential")) %>%
+  osmdata_sf()
+
+# I did not use this it was too busy 
+river <- getbb("Lisboa Portugal")%>%
+  opq()%>%
+  add_osm_feature(key = "waterway", value = "river") %>%
+  osmdata_sf()
+
+```
+
+
+```{r}
+# Dark MAP 
+ggplot() +
+  geom_sf(data = streets$osm_lines,
+          inherit.aes = FALSE,
+          color = "#7fc0ff",
+          size = .4,
+          alpha = .8) +
+  geom_sf(data = small_streets$osm_lines,
+           inherit.aes = FALSE,
+          color = "#ffbe7f",
+           size = .1,
+           alpha = .8) +
+#  geom_sf(data = river$osm_lines,
+#          inherit.aes = FALSE,
+#          color = "black",
+#          size = .2,
+#          alpha = .5) +
+  coord_sf(xlim = c(-9.296592, -8.976592), # Change the coordinates to your city  
+           ylim = c(38.547751, 38.867751), # Change the coordinates to your city 
+           expand = FALSE) +
+  theme_void() +
+  theme(
+    plot.background = element_rect(fill = "#282828")
+  )
+
+#ggsave("lisbon_map_dark.png")
+
+ggsave("lisbon_map_dark.png", # name the file
+       scale = 1,             # scale 
+       width =42.0,           # A2 size
+       height = 59.4,         # A2 size
+       units = c("cm"),       # dimention
+       dpi = 600)             # High resolution, 300 is also ok
+```
+
+```{r}
+####
+
+ggplot() +
+  geom_sf(data = streets$osm_lines,
+          inherit.aes = FALSE,
+          color = "black",
+          size = .4,
+          alpha = .8) +
+  geom_sf(data = small_streets$osm_lines,
+          inherit.aes = FALSE,
+          color = "black",
+          size = .1,
+          alpha = .2) +
+  #  geom_sf(data = river$osm_lines,
+  #          inherit.aes = FALSE,
+  #          color = "black",
+  #          size = .2,
+  #          alpha = .5) +
+  coord_sf(xlim = c(-9.296592, -8.976592), # Change the coordinates to your city 
+           ylim = c(38.547751, 38.867751), # Change the coordinates to your city 
+           expand = FALSE) +
+  theme_void() 
+
+ggsave("lisbon_map_white.png", # name the file
+       scale = 1,              # scale 
+       width =42.0,            # A2 size
+       height = 59.4,          # A2 size
+       units = c("cm"),        # dimention
+       dpi = 600)              # High resolution, 300 is also ok
+```
+
