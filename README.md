@@ -5,3 +5,4 @@ This is a script for a beautiful map of Lisbon. Suitable for a gift for friends 
 #### A2 size
 #### 600 dpi
 
+![Map of Lisbon](lisbon_map_white.png)
